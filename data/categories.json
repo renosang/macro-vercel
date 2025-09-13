@@ -1,0 +1,17 @@
+[
+  {
+    "id": "cat-greeting",
+    "name": "Chào hỏi",
+    "description": "Macro chào hỏi khách hàng"
+  },
+  {
+    "id": "cat-support",
+    "name": "Hỗ trợ",
+    "description": "Macro hỗ trợ xử lý vấn đề"
+  },
+  {
+    "id": "cat_1757791141511",
+    "name": "Danh mục 1",
+    "description": ""
+  }
+]

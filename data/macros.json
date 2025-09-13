@@ -1,0 +1,20 @@
+[
+  {
+    "id": "mac-hello-1",
+    "categoryId": "cat-greeting",
+    "title": "Macro chào hỏi",
+    "content": "Chào anh/chị, em là Sang. Em xin phép hỗ trợ anh/chị ạ."
+  },
+  {
+    "id": "mac-support-1",
+    "categoryId": "cat-support",
+    "title": "Xác nhận thông tin",
+    "content": "Anh/chị vui lòng cung cấp giúp em số điện thoại và mã đơn hàng để em kiểm tra nhé."
+  },
+  {
+    "id": "mac_1757796719309",
+    "categoryId": "cat-greeting",
+    "title": "Chào kết",
+    "content": "Khi cần hỗ trợ nhờ anh/chị liên hệ lại khung chat"
+  }
+]
