@@ -1,9 +1,13 @@
 /* src/app/globals.css */
 
+/* BẮT BUỘC: Import CSS của thư viện editor */
+@import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
 /* BẮT BUỘC với Tailwind v3: đặt 3 chỉ thị ở đầu file */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 /* Base custom */
 :root {

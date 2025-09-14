@@ -1,9 +1,16 @@
 // src/app/admin/EditableMacroItem.tsx
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Macro, Category } from "@lib/storage/types";
-import TextareaAutosize from 'react-textarea-autosize';
+import dynamic from 'next/dynamic';
+import { EditorState, convertFromHTML, ContentState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+
+const Editor = dynamic(
+  () => import("react-draft-wysiwyg").then(mod => mod.Editor),
+  { ssr: false }
+);
 
 export default function EditableMacroItem({
   macro,
@@ -19,20 +26,32 @@ export default function EditableMacroItem({
   const [isEditing, setIsEditing] = useState(false);
   const [categoryId, setCategoryId] = useState(macro.categoryId);
   const [title, setTitle] = useState(macro.title);
-  const [content, setContent] = useState(macro.content);
+  // Sử dụng EditorState
+  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const [loading, setLoading] = useState(false);
+
+  // Chuyển đổi HTML từ macro.content sang EditorState khi component được render lần đầu
+  useEffect(() => {
+    const blocksFromHtml = htmlToDraft(macro.content || '');
+    if (blocksFromHtml) {
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+      setEditorState(EditorState.createWithContent(contentState));
+    }
+  }, [macro.content]);
 
   const handleUpdate = async () => {
     setLoading(true);
     try {
-      await onUpdate({ id: macro.id, categoryId, title, content });
-      setIsEditing(false); // Thoát chế độ chỉnh sửa sau khi cập nhật
+      // Chuyển đổi EditorState sang HTML
+      const contentHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+      await onUpdate({ id: macro.id, categoryId, title, content: contentHtml });
+      setIsEditing(false);
     } finally {
       setLoading(false);
     }
   };
   
-  // Hàm xử lý xóa
   const handleDelete = async () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa macro này không?")) {
       setLoading(true);
@@ -44,7 +63,6 @@ export default function EditableMacroItem({
     }
   };
 
-  // Hiển thị ở chế độ chỉnh sửa
   if (isEditing) {
     return (
       <div className="p-4 border rounded shadow grid" style={{ gap: 8 }}>
@@ -52,10 +70,13 @@ export default function EditableMacroItem({
           {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
         <input className="input" value={title} onChange={e => setTitle(e.target.value)} />
-        <TextareaAutosize
-          className="input min-h-[100px] resize-y"
-          value={content}
-          onChange={e => setContent(e.target.value)}
+        <Editor 
+          editorState={editorState}
+          onEditorStateChange={setEditorState}
+          wrapperClassName="wrapper-class"
+          editorClassName="editor-class"
+          toolbarClassName="toolbar-class"
+          placeholder="Nội dung (dùng 'anh/chị' để tuỳ chọn danh xưng)"
         />
         <div className="flex gap-2 justify-between">
           <div className="flex gap-2">
@@ -70,11 +91,10 @@ export default function EditableMacroItem({
     );
   }
 
-  // Hiển thị ở chế độ xem
   return (
     <div className="p-4 border rounded shadow grid" style={{ gap: 8 }}>
       <h3 className="font-bold">{macro.title}</h3>
-      <p>{macro.content}</p>
+      <div dangerouslySetInnerHTML={{ __html: macro.content }} />
       <div className="text-sm text-gray-500">
         Danh mục: {categories.find(c => c.id === macro.categoryId)?.name}
       </div>
