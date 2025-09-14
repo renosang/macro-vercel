@@ -1,7 +1,7 @@
 // src/app/_client/ClientCategoryPanel.tsx
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
-import CategoryCard from "../components/CategoryCard";
+import CategoryCard from "../components/CategoryCard.tsx";
 import HeroSearch from "../components/HeroSearch";
 
 type Category = { id: string; name: string; description?: string };

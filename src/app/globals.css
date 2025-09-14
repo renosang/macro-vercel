@@ -35,7 +35,7 @@ body {
 .hero-title {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #1a4485;
 }
 
 .hero-sub {
@@ -86,4 +86,62 @@ mark {
 @media (max-width: 768px) {
   .container { padding-left: 16px; padding-right: 16px; }
   .hero-title { font-size: 1.3rem; }
+}
+
+/* src/app/globals.css */
+
+.card {
+  @apply bg-white rounded-lg shadow-sm p-6 border border-gray-100;
+}
+
+.card-title {
+  @apply text-xl font-semibold mb-4 text-gray-800;
+}
+
+.card-tabs {
+  @apply flex gap-2 overflow-x-auto;
+}
+
+.card-tab-btn {
+  @apply py-2 px-4 rounded-full font-medium text-sm transition-colors duration-200;
+}
+
+.card-tab-btn.active {
+  @apply bg-[#7a0f1b] text-white shadow-md;
+}
+
+.card-tab-btn:not(.active) {
+  @apply bg-gray-200 text-gray-600 hover:bg-gray-300;
+}
+
+.card-item {
+  @apply bg-gray-50 p-4 rounded-lg border border-gray-100;
+}
+
+.button {
+  @apply py-2 px-4 rounded-md font-medium text-sm transition-colors duration-200;
+}
+
+.button:hover:not(:disabled) {
+  @apply brightness-95;
+}
+
+.button.secondary {
+  @apply bg-gray-200 text-gray-600 hover:bg-gray-300;
+}
+
+.button.danger {
+  @apply bg-red-500 text-white hover:bg-red-600;
+}
+
+.button[type="submit"],
+.button:not(.secondary, .danger) {
+  @apply bg-[#7a0f1b] text-white hover:bg-[#8b1f2a];
+}
+
+.input,
+.select,
+.textarea {
+  @apply block w-full px-4 py-2 border border-gray-300 rounded-md text-sm shadow-sm
+         focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500;
 }

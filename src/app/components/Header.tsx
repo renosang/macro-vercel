@@ -1,20 +1,41 @@
+// src/app/components/Header.tsx
+"use client";
+
 import React from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { logout } from "@lib/auth";
+import logo from "../logo.png";
 
 export default function Header({ userName = "người đẹp" }: { userName?: string }) {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
   return (
-    <header className="bg-[#7b1222] text-white">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+    <header className="bg-white text-black border-b border-solid border-[#e5e7eb] py-3">
+      <div className="max-w-6xl mx-auto flex items-center justify-between px-4">
         <div className="flex items-center space-x-3">
-          <div className="bg-[#8c2130] border border-white/20 text-white px-3 py-1 rounded-md font-semibold leading-4 text-sm">
-            KB
-            <br />
-            Portal
-          </div>
+          <Link href="/">
+            <Image 
+              src={logo} 
+              alt="ThienTu Logo" 
+            
+              height={60}
+            />
+          </Link>
         </div>
 
-        <div className="flex items-center space-x-3 text-sm">
-          <div className="hidden sm:block">Hello, {userName}!</div>
-          <button className="bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded-md border border-white/20">
+        <div className="flex items-center space-x-4 text-base">
+          <div className="hidden sm:block font-medium">Hello, {userName}!</div>
+          <button 
+            onClick={handleLogout} 
+            className="bg-gray-200 hover:bg-gray-300 text-black px-4 py-2 rounded-lg font-semibold transition-colors duration-200"
+          >
             Đăng xuất
           </button>
         </div>

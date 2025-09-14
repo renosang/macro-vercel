@@ -1,0 +1,20 @@
+[
+  {
+    "id": "HLtWG99J6VNVOjLfhV2uV",
+    "username": "admin",
+    "password": "password123",
+    "role": "admin"
+  },
+  {
+    "id": "aDwAr9lsWECoorEl5d_WU",
+    "username": "tuyetnhi",
+    "password": "12345678",
+    "role": "guest"
+  },
+  {
+    "id": "UvWqb-Pu9_BCkilH4NpUz",
+    "username": "xuyen",
+    "password": "123456789",
+    "role": "admin"
+  }
+]

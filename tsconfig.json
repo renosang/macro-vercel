@@ -23,13 +23,13 @@
     "baseUrl": ".",
     "paths": {
       "@lib/*": [
-        "src/app/lib/*"
+        "./src/app/lib/*"
       ],
       "@components/*": [
-        "src/app/components/*"
+        "./src/app/components/*"
       ],
       "@data/*": [
-        "data/*"
+        "./data/*"
       ]
     },
     "incremental": true,
@@ -45,7 +45,7 @@
     "next-env.d.ts",
     "next.config.js",
     ".next/types/**/*.ts"
-  ],
+, "src/app/components/CategoryCard.tsx", "src/app/components/Header.tsxxxxx", "src/app/components/Header.tsxxxxx", "src/app/admin/category/[id]/1page.tsxxxxx", "src/app/components/CategorySearcher.tsxxx", "src/app/components/CategorySearch.tsxx", "src/app/components/CategoryList.tsxx", "src/app/category/[id]/page.tsx"  ],
   "exclude": [
     "node_modules"
   ]
