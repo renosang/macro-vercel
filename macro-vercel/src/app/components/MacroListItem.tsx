@@ -114,13 +114,12 @@ function escapeHtml(unsafe: string) {
 }
 
 function highlightHtml(text: string, q: string) {
-  if (!q) return escapeHtml(text).replace(/\n/g, "<br/>");
+  if (!q) return text.replace(/\n/g, "<br/>");
   const trimmed = q.trim();
-  if (trimmed === "") return escapeHtml(text).replace(/\n/g, "<br/>");
+  if (trimmed === "") return text.replace(/\n/g, "<br/>");
   const qEsc = escapeRegExp(trimmed);
   const re = new RegExp(`(${qEsc})`, "ig");
-  const escaped = escapeHtml(text);
-  return escaped
+  return text
     .replace(re, '<mark style="background:linear-gradient(90deg,#fff59d,#ffd294);padding:0 4px;border-radius:6px;">$1</mark>')
     .replace(/\n/g, "<br/>");
 }

@@ -10,11 +10,6 @@
     "description": "Macro hỗ trợ xử lý vấn đề"
   },
   {
-    "id": "cat_1757791141511",
-    "name": "Danh mục 1",
-    "description": ""
-  },
-  {
     "id": "cat_1757804573811",
     "name": "Danh mục 2",
     "description": "Test"
@@ -28,5 +23,9 @@
     "id": "cat_1757805116064",
     "name": "Danh mục 4",
     "description": ""
+  },
+  {
+    "id": "cat_1758017758168",
+    "name": "Maco Chung"
   }
 ]

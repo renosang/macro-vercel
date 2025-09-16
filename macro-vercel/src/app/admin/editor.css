@@ -1,0 +1,17 @@
+/* src/app/admin/editor.css */
+
+.editor-wrapper {
+  @apply border border-gray-300 rounded-md overflow-hidden transition-shadow duration-200;
+}
+
+.editor-main {
+  @apply bg-white p-4 h-full min-h-[200px] max-h-[500px] overflow-y-auto resize-y;
+}
+
+.editor-main p {
+  @apply m-0;
+}
+
+.editor-toolbar {
+  @apply border-b-0 border-t-0 bg-gray-50 rounded-b-none;
+}

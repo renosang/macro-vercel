@@ -3,7 +3,7 @@
     "id": "mac-hello-1",
     "categoryId": "cat-greeting",
     "title": "Macro chào hỏi",
-    "content": "Chào anh/chị, em là Sang. Em xin phép hỗ trợ anh/chị ạ."
+    "content": "<p>Chào anh/chị, em là <strong>Sang</strong>. Em xin phép hỗ trợ anh/chị ạ.ádasdas</p>\n"
   },
   {
     "id": "mac-support-1",
