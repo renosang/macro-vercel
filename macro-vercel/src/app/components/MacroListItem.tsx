@@ -31,8 +31,14 @@ export default function MacroListItem({ macro, query }: { macro: Macro; query: s
   const [displayMode, setDisplayMode] = useState<"both" | "anh" | "chi">("both");
 
   const handleCopy = async (mode: "both" | "anh" | "chi") => {
-    const text = replaceHonorific(macro.content, mode);
-    const ok = await copyToClipboard(text);
+    // Bước 1: Loại bỏ thẻ HTML từ nội dung gốc
+    const plainText = stripHtml(macro.content);
+
+    // Bước 2: Thay thế danh xưng "anh/chị" trên văn bản thuần túy đó
+    const textToCopy = replaceHonorific(plainText, mode);
+
+    // Bước 3: Sao chép vào clipboard
+    const ok = await copyToClipboard(textToCopy);
     if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
@@ -43,12 +49,14 @@ export default function MacroListItem({ macro, query }: { macro: Macro; query: s
 
   const currentContent = useMemo(() => replaceHonorific(macro.content, displayMode), [macro.content, displayMode]);
   const highlightedTitleHtml = highlightHtml(macro.title, query);
+  
+  // Hiển thị nội dung, vẫn highlight từ khóa tìm kiếm
   const highlightedContentHtml = highlightHtml(currentContent, query);
 
   return (
     <div style={itemStyles.card}>
       <div style={itemStyles.left}>
-        <div style={{  alignItems: "center", gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: "center", gap: 10 }}>
           <strong style={{ fontSize: 15 }} dangerouslySetInnerHTML={{ __html: highlightedTitleHtml }} />
           <span style={itemStyles.badge}>{macro.categoryId}</span>
           {copied && <CopiedAnimation />}
@@ -70,7 +78,6 @@ export default function MacroListItem({ macro, query }: { macro: Macro; query: s
             >
               Anh/chị
             </button>
-
             <button
               type="button"
               style={{ ...itemStyles.copyBtn, ...(displayMode === "anh" ? itemStyles.selected : {}) }}
@@ -81,7 +88,6 @@ export default function MacroListItem({ macro, query }: { macro: Macro; query: s
             >
               Anh
             </button>
-
             <button
               type="button"
               style={{ ...itemStyles.copyBtn, ...(displayMode === "chi" ? itemStyles.selected : {}) }}
@@ -100,28 +106,31 @@ export default function MacroListItem({ macro, query }: { macro: Macro; query: s
 }
 
 /* Utility functions */
+
+function stripHtml(html: string) {
+  if (!html) return "";
+  return html.replace(/<[^>]*>/g, '');
+}
+
 function escapeRegExp(s: string) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function escapeHtml(unsafe: string) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
 function highlightHtml(text: string, q: string) {
-  if (!q) return text.replace(/\n/g, "<br/>");
-  const trimmed = q.trim();
-  if (trimmed === "") return text.replace(/\n/g, "<br/>");
-  const qEsc = escapeRegExp(trimmed);
-  const re = new RegExp(`(${qEsc})`, "ig");
-  return text
-    .replace(re, '<mark style="background:linear-gradient(90deg,#fff59d,#ffd294);padding:0 4px;border-radius:6px;">$1</mark>')
-    .replace(/\n/g, "<br/>");
+    if (!q) return text;
+    const trimmed = q.trim();
+    if (trimmed === "") return text;
+  
+    const qEsc = escapeRegExp(trimmed);
+    const re = new RegExp(`(${qEsc})`, "ig");
+  
+    const parts = text.split(/(<[^>]*>)/);
+    return parts.map(part => {
+      if (part.startsWith('<') && part.endsWith('>')) {
+        return part;
+      }
+      return part.replace(re, '<mark style="background:linear-gradient(90deg,#fff59d,#ffd294);padding:0 4px;border-radius:6px;">$1</mark>');
+    }).join('');
 }
 
 /* Styles (inline for simplicity) */
@@ -187,58 +196,4 @@ const copiedAnimationStyles: React.CSSProperties = {
   background: "#f0fdf4",
   borderRadius: 999,
   animation: "fadeIn 0.5s ease-in-out"
-};
-
-const searchHeaderStyles: React.CSSProperties = {
-  textAlign: "center",
-  marginBottom: 40,
-};
-
-const searchHeadingStyles: React.CSSProperties = {
-  fontSize: 36,
-  fontWeight: 800,
-  color: "#1e293b",
-  marginBottom: 10,
-};
-
-const searchDescriptionStyles: React.CSSProperties = {
-  fontSize: 18,
-  color: "#64748b",
-  maxWidth: 600,
-  margin: "0 auto",
-  lineHeight: 1.5,
-};
-
-const searchContainerStyles: React.CSSProperties = {
-  position: "relative",
-  maxWidth: 600,
-  margin: "40px auto",
-};
-
-const searchInputStyles: React.CSSProperties = {
-  width: "100%",
-  padding: "16px 24px",
-  fontSize: 16,
-  borderRadius: 999,
-  border: "1px solid #e2e8f0",
-  outline: "none",
-  transition: "all 0.3s ease",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-};
-
-const searchIconStyles: React.CSSProperties = {
-  position: "absolute",
-  right: 20,
-  top: "50%",
-  transform: "translateY(-50%)",
-  color: "#94a3b8",
-  transition: "all 0.3s ease",
-};
-
-const searchIconTypingStyles: React.CSSProperties = {
-  opacity: 0,
-};
-
-const searchIconNormalStyles: React.CSSProperties = {
-  opacity: 1,
 };

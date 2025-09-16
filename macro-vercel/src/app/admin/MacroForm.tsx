@@ -40,6 +40,7 @@ export default function MacroForm({
     setLoading(true);
     try {
       const contentHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+      console.log(contentHtml)
       await onSubmit({ categoryId, title, content: contentHtml });
       setTitle("");
       setEditorState(EditorState.createEmpty());
